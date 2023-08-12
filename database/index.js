@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+require('dotenv').config()
 
 mongoose
   .connect(
-    'mongodb+srv://alex:qwe@cluster0-l4izx.gcp.mongodb.net/multer?retryWrites=true'
+    process.env.MONGO_SRV
   )
   .then(() => {
     console.log('connexion ok !');

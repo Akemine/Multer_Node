@@ -4,6 +4,8 @@ const app = express();
 const morgan = require('morgan');
 const multer = require('multer');
 const User = require('./database/models/user.model');
+require('dotenv').config()
+
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
@@ -38,13 +40,13 @@ app.get('/', async (req, res) => {
   try {
     const users = await User.find({}).exec();
     const user = users && users.length ? users[users.length - 1] : null;
-    res.render('index', { user });
+    res.render('index', { user, name: process.env.FILE_NAME });
   } catch (e) {
     next(e);
   }
 });
 
-app.post('/file', upload.single('avatar'), async (req, res, next) => {
+app.post('/file', upload.single(process.env.FILE_NAME), async (req, res, next) => {
   console.log(
     util.inspect(req.body, {
       compact: false,
